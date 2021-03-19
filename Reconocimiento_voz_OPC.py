@@ -14,6 +14,7 @@ client.connect()
 
 from gtts import gTTS              #importacion de librerias para el reconicimiento de voz
 from playsound import playsound
+title = 1000
 
 while True: 
     with sr.Microphone() as source:
@@ -27,8 +28,8 @@ while True:
             Usuario = client.get_node('ns=4; i=5')    # envia el texto a la variable designada en el PLC
             Us = ua.DataValue(ua.Variant(text, ua.VariantType.String))
             Usuario.set_data_value(Us)
-            
-            comparacion = ('dime el estado de las entradas'==text) 
+    
+            comparacion = ('dime el estado de las entradas'== text) 
       
             if comparacion == True:      # leer el estado de las variables 
                 Entrada00 = client.get_node('ns=4; i=19')
@@ -56,14 +57,19 @@ while True:
                 texto6 = int(Entrada05)
 
 
-                texto = "la entrada 1 es" + str(texto1) + "la entrada 2 es" + str(texto2)+ "la entrada 3 es" + str(texto3) + "la entrada 4 es" + str(texto4) + "la entrada 5 es" + str(texto5) + "la entrada 6 es" + str(texto6)
+                entradas = "la entrada 1 es" + str(texto1) + "la entrada 2 es" + str(texto2)+ "la entrada 3 es" + str(texto3) + "la entrada 4 es" + str(texto4) + "la entrada 5 es" + str(texto5) + "la entrada 6 es" + str(texto6)
 
 
                 lenguaje = 'es-ES'
-
-                audio = gTTS(text = texto, lang = lenguaje, slow = True)
-                audio.save('prueba.mp3')   #guarda en un archivo .mp3 el texto como audio
-                playsound('prueba.mp3')    #reproduce el archivo grabado
+                
+                titulo = str(title) + '.mp3'
+                print(titulo)
+                
+                audio = gTTS(text = entradas, lang = lenguaje, slow = True)
+                audio.save(titulo) #guarda en un archivo .mp3 el texto como audio
+                title = title + 1
+                
+                playsound(titulo)    #reproduce el archivo grabado
             else:
                 print('Error')
         except:
